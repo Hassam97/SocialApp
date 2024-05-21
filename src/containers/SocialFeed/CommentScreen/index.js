@@ -16,7 +16,11 @@ import IIcon from 'react-native-vector-icons/Ionicons';
 import EIcon from 'react-native-vector-icons/EvilIcons';
 import {TextInput} from 'react-native-gesture-handler';
 
-function CommentScreen({navigation}) {
+function CommentScreen({navigation, route}) {
+  const obj = route?.params?.obj;
+  console.log('====================================');
+  console.log(obj);
+  console.log('====================================');
   const [comment, setComment] = useState();
   const [newComment, setNewComment] = useState([]);
   const [isLike, setIslike] = useState(false);
@@ -61,7 +65,7 @@ function CommentScreen({navigation}) {
     );
   };
 
-  const Post = () => {
+  const Post = (item = obj) => {
     return (
       <View style={{width: '100%', padding: 7, backgroundColor: '#f1f1f1'}}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -74,10 +78,7 @@ function CommentScreen({navigation}) {
             }}
             style={[{marginRight: 10}]}
           />
-          <Image
-            source={require('../../../assets/images/userImg.png')}
-            style={styles.PostuserImage}
-          />
+          <Image source={item?.userImg} style={styles.PostuserImage} />
           <View
             style={{
               flexDirection: 'row',
@@ -87,7 +88,7 @@ function CommentScreen({navigation}) {
             }}>
             <View>
               <Text style={{fontSize: 15, color: 'black', fontWeight: 'bold'}}>
-                Mudduser One
+                {item?.username}
               </Text>
               <Text style={{fontSize: 12, color: 'black'}}>Developer</Text>
               <Text style={{fontSize: 10, color: 'black'}}>10 seconds ago</Text>
@@ -114,12 +115,9 @@ function CommentScreen({navigation}) {
             color: 'black',
             // textDecorationLine: 'underline',
           }}>
-          {`Funerarv procession to be held for late Iran president\nRaisi in Tabriz\nAfter leaving Tabriz, Raisi's body will arrive in Iran's Shia\nclerical centre of Qom on Tuesday before being moved\nto Tehran.`}
+          {item?.dec}
         </Text>
-        <Image
-          style={styles.postImage}
-          source={require('../../../assets/images/img5.jpg')}
-        />
+        <Image style={styles.postImage} source={item?.postImg} />
         <Text
           style={{
             fontSize: 15,
@@ -161,7 +159,12 @@ function CommentScreen({navigation}) {
               Like
             </Text>
           </TouchableOpacity>
-          <View
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={() => {
+              //   navigation.navigate('CommentScreen', {obj: item});
+              // CommentScreen
+            }}
             style={{
               flexDirection: 'row',
               alignItems: 'center',
@@ -183,9 +186,11 @@ function CommentScreen({navigation}) {
               }}>
               Comments
             </Text>
-          </View>
+          </TouchableOpacity>
           <TouchableOpacity
-            onPress={handleShare}
+            onPress={() => {
+              handleShare();
+            }}
             style={{flexDirection: 'row', alignItems: 'center'}}>
             <IIcon
               name={'share-social-outline'}
@@ -205,7 +210,6 @@ function CommentScreen({navigation}) {
             </Text>
           </TouchableOpacity>
         </View>
-        <FlatList data={newComment} renderItem={CommentView} />
       </View>
     );
   };

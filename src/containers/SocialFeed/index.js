@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {
+  FlatList,
   Image,
+  ScrollView,
   Share,
   StyleSheet,
   Text,
@@ -14,6 +16,48 @@ import EIcon from 'react-native-vector-icons/EvilIcons';
 
 function SocialFeed({navigation}) {
   const [isLike, setIslike] = useState(false);
+  const [posts, setPosts] = useState([
+    {
+      id: 1,
+      userImg: require('../../assets/images/userImg.png'),
+      postImg: require('../../assets/images/img5.jpg'),
+      username: 'Mudduser One',
+      link: 'https://i.dawn.com/primary/2024/05/21123758da23e6b.jpg',
+      dec: `Funerarv procession to be held for late Iran president\nRaisi in Tabriz\nAfter leaving Tabriz, Raisi's body will arrive in Iran's Shia\nclerical centre of Qom on Tuesday before being moved\nto Tehran.`,
+    },
+    {
+      id: 2,
+      userImg: require('../../assets/images/userImg2.png'),
+      username: 'Saad Khan',
+      postImg: require('../../assets/images/img6.jpg'),
+      link: 'https://i.dawn.com/primary/2024/05/21123758da23e6b.jpg',
+      dec: `hello every one`,
+    },
+    {
+      id: 3,
+      userImg: require('../../assets/images/userImg3.png'),
+      postImg: require('../../assets/images/img7.jpg'),
+      username: 'Niaz ',
+      link: 'https://i.dawn.com/primary/2024/05/21123758da23e6b.jpg',
+      dec: `Hi`,
+    },
+    {
+      id: 4,
+      userImg: require('../../assets/images/userImg4.png'),
+      postImg: require('../../assets/images/img9.png'),
+      username: 'Noor Khan',
+      link: 'https://i.dawn.com/primary/2024/05/21123758da23e6b.jpg',
+      dec: ``,
+    },
+    {
+      id: 5,
+      userImg: require('../../assets/images/userImg5.png'),
+      postImg: require('../../assets/images/img8.jpeg'),
+      username: 'Hammad Khan',
+      link: 'https://i.dawn.com/primary/2024/05/21123758da23e6b.jpg',
+      dec: 'hello',
+    },
+  ]);
   const Header = () => {
     return (
       <View style={[styles.headerStyle]}>
@@ -52,14 +96,11 @@ function SocialFeed({navigation}) {
     }
   };
 
-  const Post = () => {
+  const Post = ({item}) => {
     return (
       <View style={{width: '100%', padding: 7, backgroundColor: '#f1f1f1'}}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Image
-            source={require('../../assets/images/userImg.png')}
-            style={styles.PostuserImage}
-          />
+          <Image source={item?.userImg} style={styles.PostuserImage} />
           <View
             style={{
               flexDirection: 'row',
@@ -69,7 +110,7 @@ function SocialFeed({navigation}) {
             }}>
             <View>
               <Text style={{fontSize: 15, color: 'black', fontWeight: 'bold'}}>
-                Mudduser One
+                {item?.username}
               </Text>
               <Text style={{fontSize: 12, color: 'black'}}>Developer</Text>
               <Text style={{fontSize: 10, color: 'black'}}>10 seconds ago</Text>
@@ -96,12 +137,9 @@ function SocialFeed({navigation}) {
             color: 'black',
             // textDecorationLine: 'underline',
           }}>
-          {`Funerarv procession to be held for late Iran president\nRaisi in Tabriz\nAfter leaving Tabriz, Raisi's body will arrive in Iran's Shia\nclerical centre of Qom on Tuesday before being moved\nto Tehran.`}
+          {item?.dec}
         </Text>
-        <Image
-          style={styles.postImage}
-          source={require('../../assets/images/img5.jpg')}
-        />
+        <Image style={styles.postImage} source={item?.postImg} />
         <Text
           style={{
             fontSize: 15,
@@ -146,7 +184,7 @@ function SocialFeed({navigation}) {
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={() => {
-              navigation.navigate('CommentScreen');
+              navigation.navigate('CommentScreen', {obj: item});
               // CommentScreen
             }}
             style={{
@@ -200,8 +238,11 @@ function SocialFeed({navigation}) {
   return (
     <View style={[styles.mainView]}>
       {Header()}
-      {_renderCreatePost()}
-      {Post()}
+      <ScrollView>
+        {_renderCreatePost()}
+        <FlatList data={posts} renderItem={Post} />
+      </ScrollView>
+      {/* {Post()} */}
     </View>
   );
 }
