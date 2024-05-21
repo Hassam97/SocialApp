@@ -210,6 +210,7 @@ function CommentScreen({navigation, route}) {
             </Text>
           </TouchableOpacity>
         </View>
+        <FlatList data={newComment} renderItem={CommentView} />
       </View>
     );
   };
